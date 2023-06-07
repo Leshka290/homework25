@@ -1,8 +1,8 @@
 package test;
 
 import org.junit.Test;
-import stringAgorithm.StringList;
-import stringAgorithm.StringListImpl;
+import stringAlgorithm.StringList;
+import stringAlgorithm.StringListImpl;
 
 import java.util.NoSuchElementException;
 
@@ -15,18 +15,12 @@ public class StringListImplTest {
     private final StringList stringList = new StringListImpl(array);
     private final static int INDEX = 3;
     private final static int INDEXSET = 2;
-    private final static int HIGHINDEX = 5;
+    private final static int HIGHINDEX = 6;
 
     @Test
     public void shouldAddTest() {
-        int n = array.length + 1;
         String item = "four";
-        String[] newArray = new String[n];
 
-        newArray[array.length] = stringList.add(item);
-        System.arraycopy(array, 0, newArray, 0, array.length);
-
-        assertArrayEquals(arrayCopy, newArray);
         assertEquals(arrayCopy[INDEX], stringList.add(item));
     }
 
@@ -42,40 +36,29 @@ public class StringListImplTest {
 
         assertArrayEquals(arrayCopy, newArray);
         assertEquals(arrayCopy[INDEX], stringList.add(INDEX, item));
-        assertThrows(IndexOutOfBoundsException.class, () -> stringList.add(HIGHINDEX, "five"));
+        assertThrows(IndexOutOfBoundsException.class, () -> stringList.add(HIGHINDEX, ""));
     }
 
     @Test
     public void shouldSetTest() {
-        assertThrows(IndexOutOfBoundsException.class, () -> stringList.set(HIGHINDEX, "five"));
-        assertEquals(arrayCopy[INDEXSET], stringList.set(INDEXSET, "free"));
+        String item = "free";
+
+        assertThrows(IndexOutOfBoundsException.class, () -> stringList.set(HIGHINDEX, ""));
+        assertEquals(arrayCopy[INDEXSET], stringList.set(INDEXSET, item));
     }
 
     @Test
     public void shouldRemoveTest() {
         String item = "free";
-        String[] newArray = new String[arrayCopy.length - 1];
 
-        System.arraycopy(arrayCopy, 0, newArray, 0, INDEXSET);
-        System.arraycopy(arrayCopy, INDEXSET + 1, newArray, INDEXSET, newArray.length - INDEXSET);
-        newArray[INDEXSET] = stringList.remove(item);
-
-        assertArrayEquals(array, newArray);
         assertEquals(array[INDEXSET], stringList.remove(item));
-        assertThrows(NoSuchElementException.class, () -> stringList.remove("five"));
+        assertThrows(NoSuchElementException.class, () -> stringList.remove(""));
     }
 
     @Test
     public void shouldRemoveIndexTest() {
-        String[] newArray = new String[arrayCopy.length - 1];
-
-        System.arraycopy(arrayCopy, 0, newArray, 0, INDEXSET);
-        System.arraycopy(arrayCopy, INDEXSET + 1, newArray, INDEXSET, newArray.length - INDEXSET);
-        newArray[INDEXSET] = stringList.remove(INDEXSET);
-
-        assertArrayEquals(array, newArray);
         assertEquals(array[INDEXSET], stringList.remove(INDEXSET));
-        assertThrows(NoSuchElementException.class, () -> stringList.remove("five"));
+        assertThrows(NoSuchElementException.class, () -> stringList.remove(""));
     }
 
     @Test

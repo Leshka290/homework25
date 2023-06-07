@@ -1,11 +1,11 @@
-package stringAgorithm;
+package stringAlgorithm;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class StringListImpl implements StringList {
 
-    private final String[] array;
+    private String[] array;
 
     public StringListImpl(String[] array) {
         this.array = array;
@@ -18,6 +18,7 @@ public class StringListImpl implements StringList {
 
         System.arraycopy(array, 0, newArray, 0, array.length);
         newArray[n - 1] = item;
+        array = newArray;
         return item;
     }
 
@@ -33,6 +34,7 @@ public class StringListImpl implements StringList {
             System.arraycopy(array, 0, newArray, 0, index);
             System.arraycopy(array, index - 1, newArray, index, newArray.length - index);
             newArray[index] = item;
+            array = newArray;
             return item;
         }
     }
@@ -63,6 +65,7 @@ public class StringListImpl implements StringList {
         } else {
             System.arraycopy(array, 0, newArray, 0, index);
             System.arraycopy(array, index + 1, newArray, index, newArray.length - index);
+            array = newArray;
         }
         return item;
     }
@@ -70,14 +73,17 @@ public class StringListImpl implements StringList {
     @Override
     public String remove(int index) {
         String[] newArray = new String[array.length - 1];
+        String removeString;
 
         if (index > array.length) {
             throw new IndexOutOfBoundsException();
         } else {
+            removeString = array[index];
             System.arraycopy(array, 0, newArray, 0, index);
             System.arraycopy(array, index + 1, newArray, index, newArray.length - index);
+            array = newArray;
         }
-        return array[index];
+        return removeString;
     }
 
     @Override
@@ -158,6 +164,7 @@ public class StringListImpl implements StringList {
     public String[] toArray() {
         String[] newArray = new String[array.length];
         System.arraycopy(array, 0, newArray, 0, array.length);
+        array = newArray;
         return newArray;
     }
 }
