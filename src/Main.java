@@ -6,8 +6,8 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
-            int el = new Random().nextInt(10000);
+        for (int i = 0; i < 7; i++) {
+            int el = new Random().nextInt(100);
             list.add(el);
         }
         IntegerList integerList = new IntegerListImpl(list.toArray(new Integer[0]));
@@ -27,8 +27,13 @@ public class Main {
         integerList3.selectionSort();
         System.out.println(System.currentTimeMillis() - start);
 
-      // System.out.println(Arrays.toString(integerList.toArray()));
-
-
+        System.out.println(integerList.add(2, 100000));
+        System.out.println(integerList.add(3, 100000));
+        System.out.println(integerList.add(100000));
+        System.out.println(integerList.add(100000));
+        System.out.println(Arrays.toString(integerList.toArray()));
+        System.out.println(integerList.size());
+        System.out.println(integerList.toArray().length);
+        // System.out.println(Arrays.toString(integerList.toArray()));
     }
 }

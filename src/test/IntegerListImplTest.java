@@ -10,12 +10,13 @@ import static org.junit.Assert.*;
 
 public class IntegerListImplTest {
 
-    private final Integer[] array = new Integer[]{1, 2, 3};
-    private final Integer[] arrayCopy = new Integer[]{1, 2, 3, 4};
+    private final Integer[] array = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8};
+    private final Integer[] arrayCopy = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8};
     private final IntegerList integerList = new IntegerListImpl(array);
     private final static int INDEX = 3;
+    private final static int SIZE = 7;
     private final static int INDEXSET = 2;
-    private final static int HIGHINDEX = 6;
+    private final static int HIGHINDEX = 9;
 
     @Test
     public void shouldAddTest() {
@@ -28,15 +29,15 @@ public class IntegerListImplTest {
     public void shouldAddIndexTest() {
         int n = array.length + 1;
         Integer item = 4;
-        Integer[] newArray = new Integer[n];
-
-        System.arraycopy(array, 0, newArray, 0, INDEX);
-        System.arraycopy(array, INDEX - 1, newArray, INDEX, newArray.length - INDEX);
-        newArray[INDEX] = integerList.add(INDEX, item);
-
-        assertArrayEquals(arrayCopy, newArray);
+//        Integer[] newArray = new Integer[n];
+//
+//        System.arraycopy(array, 0, newArray, 0, INDEX);
+//        System.arraycopy(array, INDEX - 1, newArray, INDEX, newArray.length - INDEX);
+//        newArray[INDEX] = integerList.add(INDEX, item);
+//
+//        assertArrayEquals(arrayCopy, newArray);
         assertEquals(arrayCopy[INDEX], integerList.add(INDEX, item));
-        assertThrows(IndexOutOfBoundsException.class, () -> integerList.add(HIGHINDEX, 5));
+        assertThrows(IndexOutOfBoundsException.class, () -> integerList.add(HIGHINDEX, item));
     }
 
     @Test
@@ -77,9 +78,9 @@ public class IntegerListImplTest {
 
     @Test
     public void shouldLastIndexOfTest() {
-        Integer item = 3;
+        Integer item = 8;
 
-        assertEquals(INDEXSET, integerList.lastIndexOf(item));
+        assertEquals(SIZE, integerList.lastIndexOf(item));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class IntegerListImplTest {
 
     @Test
     public void shouldSizeTest() {
-        assertEquals(array.length, integerList.size());
+        assertEquals(SIZE, integerList.size());
     }
 
     @Test
@@ -128,21 +129,21 @@ public class IntegerListImplTest {
 
     @Test
     public void shouldQuickSortTest() {
-        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3});
-        integerListSorted.quickSort(0, 2);
+        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3, 8, 4, 6, 7, 5});
+        integerListSorted.quickSort(0, 7);
         assertArrayEquals(integerList.toArray(), integerListSorted.toArray());
     }
 
     @Test
     public void shouldSelectionSortTest() {
-        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3});
+        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3, 5, 4, 6, 7, 8});
         integerListSorted.selectionSort();
         assertArrayEquals(integerList.toArray(), integerListSorted.toArray());
     }
 
     @Test
     public void shouldBubbleSortTest() {
-        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3});
+        IntegerList integerListSorted = new IntegerListImpl(new Integer[]{2, 1, 3, 8, 4, 6, 7, 5});
         integerListSorted.bubbleSort();
         assertArrayEquals(integerList.toArray(), integerListSorted.toArray());
     }

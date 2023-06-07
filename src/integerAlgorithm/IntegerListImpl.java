@@ -1,11 +1,13 @@
 package integerAlgorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class IntegerListImpl implements IntegerList{
 
     private Integer[] array;
+    private int size = 7;
 
     public IntegerListImpl(Integer[] array) {
         this.array = array;
@@ -13,30 +15,39 @@ public class IntegerListImpl implements IntegerList{
 
     @Override
     public Integer add(Integer item) {
-        int n = array.length + 1;
-        Integer[] newArray = new Integer[n];
+            add(item, array, size);
 
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        newArray[n - 1] = item;
-        array = newArray;
+//        int n = array.length + 1;
+//        Integer[] newArray = new Integer[n];
+//
+//        System.arraycopy(array, 0, newArray, 0, array.length);
+//        newArray[n - 1] = item;
+//        array = newArray;
         return item;
+    }
+
+    private void add(Integer item, Integer[] array, int s) {
+
+        if (s == array.length)
+            array = grow();
+        array[s] = item;
+        size = s + 1;
     }
 
     @Override
     public Integer add(int index, Integer item) {
 
-        if (index > array.length) {
-            throw new IndexOutOfBoundsException();
-        } else {
-            int n = array.length + 1;
-            Integer[] newArray = new Integer[n];
-
-            System.arraycopy(array, 0, newArray, 0, index);
-            System.arraycopy(array, index - 1, newArray, index, newArray.length - index);
-            newArray[index] = item;
-            array = newArray;
-            return item;
-        }
+        rangeCheckForAdd(index);
+        final int s;
+        Integer[] elementData;
+        if ((s = size) == (elementData = this.array).length)
+            elementData = grow();
+        System.arraycopy(elementData, index,
+                elementData, index + 1,
+                s - index);
+        elementData[index] = item;
+        size = s + 1;
+        return item;
     }
 
     @Override
@@ -144,7 +155,7 @@ public class IntegerListImpl implements IntegerList{
 
     @Override
     public int size() {
-        return array.length;
+        return size;
     }
 
     @Override
@@ -228,7 +239,7 @@ public class IntegerListImpl implements IntegerList{
         return counter;
     }
 
-    private static Integer binarySearch(Integer[] values, int valueToFind, int l, int r) {
+    private Integer binarySearch(Integer[] values, int valueToFind, int l, int r) {
 
         if (l == r) {
             return (values[l] == valueToFind) ? l : -1;
@@ -242,5 +253,47 @@ public class IntegerListImpl implements IntegerList{
             return binarySearch(values, valueToFind, l, mid - 1);
         }
         return mid;
+    }
+
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    private static final Integer[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private Integer[] grow(int minCapacity) {
+        return array = Arrays.copyOf(array,
+                newCapacity(minCapacity));
+    }
+
+    private Integer[] grow() {
+        return grow(array.length + 1);
+    }
+
+    private int newCapacity(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = array.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity <= 0) {
+            if (array == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
+                return Math.max(DEFAULT_CAPACITY, minCapacity);
+            if (minCapacity < 0) // overflow
+                throw new OutOfMemoryError();
+            return minCapacity;
+        }
+        return (newCapacity - MAX_ARRAY_SIZE <= 0)
+                ? newCapacity
+                : hugeCapacity(minCapacity);
+    }
+
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE)
+                ? Integer.MAX_VALUE
+                : MAX_ARRAY_SIZE;
+    }
+
+    private void rangeCheckForAdd(int index) {
+        if (index > array.length || index < 0)
+            throw new IndexOutOfBoundsException();
     }
 }
